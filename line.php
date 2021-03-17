@@ -36,15 +36,12 @@ if ( sizeof($request_array['events']) > 0 )
 		   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 		   $result = curl_exec($ch);
 		   curl_close($ch);   
-		   
 		   $obj = json_decode($result);
-		   
-		   //$reply_message = $result;
-		   $reply_message = 'ติดเชื้อสะสมโว้ยยย!!! '. $obj->{'Confirmed'} .' คน รักษาหายแล้ว '.$obj->{'Recovered'} . ' คน';
-	
-	        }	
+		  // $reply_message = $result;
+		   $reply_message = 'ติดเชื้อสะสม '. $obj->{'Confirmed'}.'คน'.'รักษาหายแล้ว '. $obj->{'Recovered'}.'คน';
+	   	}
 	   
-	   if($text =="@บอท ขอรหัสนิสิตของผู้พัฒนา ส่งไปที่ https://linebot.kantit.com/stuid.php"){
+	    if($text =="@บอท ขอรหัสนิสิตของผู้พัฒนา ส่งไปที่ https://linebot.kantit.com/stuid.php"){
 	    	  $url = 'https://linebot.kantit.com/stuid.php';
 		   $ch = curl_init($url);
 		   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
