@@ -22,15 +22,29 @@ if ( sizeof($request_array['events']) > 0 )
    {
 		$text = $event['message']['text'];
 		
-		//$reply_message = '('.$text.') ได้รับข้อความเรียบร้อย!!';   
+	   	if($text == "ชื่อ" || $text == "ชื่ออะไร" || $text == "ชื่ออะไรครับ"|| $text == "ชื่ออะไรคะ"){
+			$reply_message = 'ชื่อของฉันคือ BOTCAT';
+		}
 	   
-	   	if($text == "ชื่ออะไร"||$text == "ชื่ออะไรครับ"||$text == "ชื่ออะไรค่ะ"){
-			$reply_message = 'BOTGUINY เองกวิ้นนน';   
-		}
-	  	else if($text == "CDMA"){
-			$reply_message = '1,-3,-1,-1';   
-		}
-	   else if($text =="@บอท ขอรหัสนิสิตของผู้พัฒนา ส่งไปที่ https://linebot.kantit.com/stuid.php"){
+	   	if($text == "สถานการณ์โควิดวันนี้" || $text == "covid19" || $text == "covid-19" || $text == "Covid-19"){
+		   $url = 'https://covid19.th-stat.com/api/open/today';
+		   $ch = curl_init($url);
+		   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+		   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		   curl_setopt($ch, CURLOPT_HTTPHEADER, $post_header);
+		   curl_setopt($ch, CURLOPT_POSTFIELDS, $post_body);
+		   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		   $result = curl_exec($ch);
+		   curl_close($ch);   
+		   
+		   $obj = json_decode($result);
+		   
+		   //$reply_message = $result;
+		   $reply_message = 'ติดเชื้อสะสมโว้ยยย!!! '. $obj->{'Confirmed'} .' คน รักษาหายแล้ว '.$obj->{'Recovered'} . ' คน';
+	
+	        }	
+	   
+	   if($text =="@บอท ขอรหัสนิสิตของผู้พัฒนา ส่งไปที่ https://linebot.kantit.com/stuid.php"){
 	    	  $url = 'https://linebot.kantit.com/stuid.php';
 		   $ch = curl_init($url);
 		   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -41,84 +55,37 @@ if ( sizeof($request_array['events']) > 0 )
 		   $result = curl_exec($ch);
 		   curl_close($ch);   		   
 		   $obj = json_decode($result);		   
-		   //$reply_message = $result;
-		   $reply_message = 'ผลการบันทึกข้อมูล'. $obj->{'status'} .' และ '.$obj->{'data'} . ' OK!';
+		   $reply_message = $result;
+		   //$reply_message = 'ผลการบันทึกข้อมูล'. $obj->{'status'} .' และ '.$obj->{'data'} . ' OK!';
 	   }
-	   	else if($text == "สถานการณ์โควิดวันนี้" || $text == "covid19" || $text == "covid-19" || $text == "Covid-19"){
-		   $url = 'https://covid19.th-stat.com/api/open/today';
-		   $ch = curl_init($url);
-		   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-		   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		   curl_setopt($ch, CURLOPT_HTTPHEADER, $post_header);
-		   curl_setopt($ch, CURLOPT_POSTFIELDS, $post_body);
-		   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		   $result = curl_exec($ch);
-		   curl_close($ch);   
-		   $obj = json_decode($result);
-// 		   $reply_message = $result;
-		   $reply_message = 'ติดเชื้อสะสม '. $obj->{'Confirmed'}.'คน'.'รักษาหายแล้ว '. $obj->{'Recovered'}.'คน';
-	   	}
-	   	else if($text == "ราคาทองวันนี้" || $text == "ทอง" || $text == "บอทราคาทองวันนี้" || $text == "ราคาทอง"){
-		   $url = 'http://www.thaigold.info/RealTimeDataV2/gtdata_.txt';
-		   $ch = curl_init($url);
-		   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-		   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		   curl_setopt($ch, CURLOPT_HTTPHEADER, $post_header);
-		   curl_setopt($ch, CURLOPT_POSTFIELDS, $post_body);
-		   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		   $result = curl_exec($ch);
-		   curl_close($ch);   
-		   $obj = json_decode($result);
-// 		   $reply_message = $result;			
-		   $reply_message = 'ทองคำแท่ง 96.5% '.'รับซื้อ '. $obj[4]->{'bid'}.'บาท'.'ขายออก '. $obj[4]->{'ask'}.'บาท';
-	   	}
-	   else if($text == "ราคาบอล"){
-		   $url = 'https://goalpaper.com/api_match_free.php';
-		   $ch = curl_init($url);
-		   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-		   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		   curl_setopt($ch, CURLOPT_HTTPHEADER, $post_header);
-		   curl_setopt($ch, CURLOPT_POSTFIELDS, $post_body);
-		   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		   $result = curl_exec($ch);
-		   curl_close($ch);   
-		   $obj = json_decode($result);
-		   
 	   
-// 		$str_msg = explode(" ",$str);
-// 		if($str_msg[0] == "@บอท"){
-// 		   $curl = curl_init();
-// 	       	   curl_setopt_array($curl, array(
-// 		   CURLOPT_URL => "https://thaiqa.p.rapidapi.com/predict",
-// 	 	   CURLOPT_RETURNTRANSFER => true,
-// 		   CURLOPT_FOLLOWLOCATION => true,
-// 		   CURLOPT_ENCODING => ",
-// 		   CURLOPT_MAXREDIRS => 10,
-// 		   CURLOPT_TIMEOUT => 30,
-// 		   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-// 		   CURLOPT_CUSTOMREQUEST => "POST",
-// 		   CURLOPT_POSTFIELDS => "[    {      "paragraphs": [        {          "qas": [            {              "id": "1",              "question": "ราคาทอง"              }          ],          "context": "ราคาทองคำวันนี้ 28000 บาท"        }      ]    }]",
-// 		   CURLOPT_HTTPHEADER => array(
-// 		   "accept: application/json",
-// 		   "content-type: application/json",
-// 		   "x-rapidapi-host: thaiqa.p.rapidapi.com",
-// 		   "x-rapidapi-key: 73754e5081msh8518b2aca115966p1ccc07jsncc5021c4db36"
-// 		 	),
-// 		  ));
+	   if($text =="@บอท ขอรายชื่อนิสิตที่ส่งงาน LineBoT"){
+	    	   $url = 'https://linebot.kantit.com/list.php';
+		   
+		   $reply_message = file_get_contents($url);   // Get request content
+		   
+		   //$request_array = json_decode($request, true);   // Decode JSON to Array
+		   
+		   //$result = file_get_contents($url);		   
+		   //$obj = json_decode($result);
+		   //$reply_message = 'มีส่งงาน '. $obj->{'Confirmed'} .' คน ได้แก่...';
+		   //$reply_message = 'ติดเชื้อสะสม '. $obj->{'Confirmed'} .' คน รักษาหายแล้ว '.$obj->{'Recovered'} . ' คน';
+		   $reply_message = "โปรดรอสักครู่....";
+	   }
+	   
+	     if($text =="@บอท ขอที่อยู่มทร.หน่อยจิ"){
+	    	   $url = 'https://www.google.com/maps/place/Phra+Nakhon+Si+Ayutthaya/@14.3935691,100.237786,10z/data=!3m1!4b1!4m8!1m2!2m1!1smaps+google!3m4!1s0x30e2736f5bfd8f7f:0x1019237450c4860!8m2!3d14.3532128!4d100.5689599';
+		   
+		   $reply_message = $url;   // Get request content
 
-// 		  $response = curl_exec($curl);
-// 		  $err = curl_error($curl);	
-// 		  curl_close($curl);
-// 		  if ($err) {
-// 			echo "cURL Error #:" . $err;
-// 		  } else {
-// 			echo $response;
-// 			 $reply_message = $response;	
-// 		  }
-// 	    }
-  }
-  else
+		   //$reply_message = $reply_message;
+	   }
+	   
+		//$reply_message = '('.$text.') ได้รับข้อความเรียบร้อย!!';   
+   }
+   else
     $reply_message = 'ระบบได้รับ '.ucfirst($event['message']['type']).' ของคุณแล้ว';
+  
   }
   else
    $reply_message = 'ระบบได้รับ Event '.ucfirst($event['type']).' ของคุณแล้ว';
