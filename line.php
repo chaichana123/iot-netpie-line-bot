@@ -84,12 +84,6 @@ if ( sizeof($request_array['events']) > 0 )
 		   curl_close($ch);   
 		   $obj = json_decode($result);
 		   
-// 		   $reply_message = $result;			
-		   $reply_message = <?php
-			// API ตารางบอลวันนี้
-			echo file_get_contents(“https://goalpaper.com/api_match_free.php“);
-			?>
-	   		};
 	   
 // 		$str_msg = explode(" ",$str);
 // 		if($str_msg[0] == "@บอท"){
